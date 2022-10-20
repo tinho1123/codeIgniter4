@@ -51,8 +51,14 @@ $routes->post('/login', 'LoginController::login');
  * --------------------------------------------------------------------
  */
 
-$routes->get('/home', 'HomeController::index');
+$routes->get('/dashboard', 'DashboardController::index');
 
+/*
+ * --------------------------------------------------------------------
+ * Tela Profile
+ * --------------------------------------------------------------------
+ */
+$routes->get('/profile', 'ProfileController::index');
 
 /*
  * --------------------------------------------------------------------

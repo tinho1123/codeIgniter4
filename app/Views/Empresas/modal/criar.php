@@ -26,7 +26,7 @@
             <div class="mb-3">
               <label for="inputPassword" class="form-label">Senha</label>
               <input type="password" required class="form-control" id="inputPassword" name='senha' aria-describedby="passwordHelp">
-              <div class='form-text' id='passwordHelp'>Numca compartilhe sua senha com ninguém!</div>
+              <div class='form-text' id='passwordHelp'>Nunca compartilhe sua senha com ninguém!</div>
             </div>
 
             <!- Criar endereço ->

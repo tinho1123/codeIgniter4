@@ -2,24 +2,20 @@
 
 namespace App\Controllers;
 
-use App\Models\EmpresasModels;
-use App\Controllers\EnderecosController;
-use App\Controllers\EstadosController;
 use CodeIgniter\API\ResponseTrait;
 
 class EmpresasController extends BaseController
 {
   private string $_baseUrl = 'Empresas/';
-  private EmpresasModels $_db;
-  private EnderecosController $_enderecos;
-  private EstadosController $_estados;
+  private string $_include = 'include/';
+
   use ResponseTrait;
 
   function __construct()
   {
-    $this->_db = new EmpresasModels();
-    $this->_enderecos = new EnderecosController();
-    $this->_estados = new EstadosController();
+    $this->_db = model('EmpresasModels');
+    $this->_enderecos = model('EnderecosModels');
+    $this->_estados = model('EstadosModels');
     helper('utils');
   }
 
@@ -27,16 +23,17 @@ class EmpresasController extends BaseController
   {
     $data = [
       'empresas' => $this->_db->find(),
-      'estados' => $this->_estados->getAll(),
+      'estados' => $this->_estados->find(),
       'titulo' => 'Empresas',
       'js' => view($this->_baseUrl . 'js/main.js'),
     ];
 
-    echo view('include/header');
+    echo view($this->_include . 'header');
+    echo view($this->_include . 'menu');
     echo view($this->_baseUrl . 'index', $data);
     echo view($this->_baseUrl . 'modal/criar', $data);
     echo view($this->_baseUrl . 'modal/editar');
-    echo view('include/footer', $data);
+    echo view($this->_include . 'footer', $data);
   }
 
   function getAll()
@@ -48,7 +45,7 @@ class EmpresasController extends BaseController
   {
     $arr_empresa = $this->request->getPost(['razao_social', 'fundacao', 'email', 'senha']);
     $arr_endereco =  $this->request->getPost(['logradouro', 'numero', 'bairro', 'cidade', 'uf', 'cep']);
-    $id_endereco = $this->_enderecos->create($arr_endereco);
+    $id_endereco = $this->_enderecos->insert($arr_endereco);
     $arr_empresa['fk_endereco'] = $id_endereco;
     $this->_db->insert($arr_empresa);
     return redirect()->to(site_url('empresas'));
@@ -56,7 +53,6 @@ class EmpresasController extends BaseController
 
   public function delete($id)
   {
-
     return $this->respond($this->_db->delete(['id' => $id]), 200);
   }
 

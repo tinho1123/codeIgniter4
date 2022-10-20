@@ -37,3 +37,7 @@ $(".btn-excluir").on("click", function () {
       alert(msg);
     });
 });
+
+$("#btnCriarClientes").on("click", function () {
+  $("#adicionarCliente").modal("show");
+});

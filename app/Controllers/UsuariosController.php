@@ -8,6 +8,7 @@ use CodeIgniter\API\ResponseTrait;
 class UsuariosController extends BaseController
 {
   private string $_baseUrl = 'Usuarios/';
+  private string $_include = 'include/';
   use ResponseTrait;
 
   function __construct()
@@ -15,6 +16,7 @@ class UsuariosController extends BaseController
     $this->_db = new UsuariosModels();
     $this->_empresas = new EmpresasController();
     $this->_niveis_acessos = new NiveisDeAcessosController();
+    $this->session = \Config\Services::session();
     helper('utils');
   }
 
@@ -33,26 +35,28 @@ class UsuariosController extends BaseController
       'js' => view($this->_baseUrl . 'js/main.js'),
     ];
 
-    echo view('include/header');
+    echo view($this->_include . 'header');
+    echo view($this->_include . 'menu');
     echo view($this->_baseUrl . "index", $data);
     echo view($this->_baseUrl . 'modal/criar');
     echo view($this->_baseUrl . 'modal/editar', $data);
-    echo view('include/footer', $data);
+    echo view($this->_include . 'footer', $data);
   }
 
   function login($arr)
   {
     $algo = $this->_db->where('email', $arr['email'])->first();
     if (isset($algo)) {
-      if ($arr['senha'] == $algo['senha']) {
-        session()->set([
-          'usuario' => $algo['email']
+      if (md5($arr['senha']) == $algo['senha']) {
+        $this->session->set([
+          'email' => $algo['email'],
+          'id' => $algo['id'],
         ]);
       } else {
-        return (object) ['type' => 'error', 'message' => 'Senha incorreta'];
+        return (object) ['type' => 'error'];
       }
     } else {
-      return (object) ['type' => 'error', 'message' => 'Usuário não encontrado'];
+      return (object) ['type' => 'error'];
     };
   }
 
@@ -61,6 +65,7 @@ class UsuariosController extends BaseController
     $arrUsuario = $this->request->getPost(['nome', 'email', 'senha']);
     $arrUsuario['fk_empresa'] = $_POST['empresa'];
     $arrUsuario['fk_nivel_acesso'] = $_POST['nivel_acesso'];
+    $arrUsuario['senha'] = md5($arrUsuario['senha']);
     $this->_db->insert($arrUsuario);
     return redirect()->to(base_url('usuarios'));
   }

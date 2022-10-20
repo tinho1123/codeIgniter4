@@ -33,3 +33,7 @@ $(".btn-excluir").on("click", function () {
       alert(msg);
     });
 });
+
+$("#btnCriarEmpresa").on("click", function () {
+  $("#adicionarEmpresa").modal("show");
+});

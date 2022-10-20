@@ -8,6 +8,7 @@ use CodeIgniter\API\ResponseTrait;
 class ClientesController extends BaseController
 {
   private string $_baseUrl = 'Clientes/';
+  private string $_include = 'include/';
 
   use ResponseTrait;
 
@@ -24,11 +25,12 @@ class ClientesController extends BaseController
       'titulo' => 'Clientes',
       'js' => view($this->_baseUrl . 'js/main.js'),
     ];
-    echo view('include/header');
+    echo view($this->_include . 'header');
+    echo view($this->_include . 'menu');
     echo view($this->_baseUrl . 'index', $data);
     echo view($this->_baseUrl . 'modal/criar', $data);
     echo view($this->_baseUrl . 'modal/editar');
-    echo view('include/footer');
+    echo view($this->_include . 'footer');
   }
 
   public function criar()

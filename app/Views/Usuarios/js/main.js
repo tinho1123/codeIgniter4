@@ -34,3 +34,7 @@ $(".btn-excluir").on("click", function () {
       alert(msg);
     });
 });
+
+$("#btnCriarUsuario").on("click", function () {
+  $("#adicionarUsuario").modal("show");
+});

@@ -37,7 +37,7 @@
             </div>
 
             <div class="mb-3">
-              <label for="inputEmpresa" class="form-label">Empresa</label>
+              <label for="inputEmpresa" class="form-label">Nivel de Acesso</label>
               <select class="form-select" name='nivel_acesso' required>
                 <option value=''>Escolha o nivel de acesso</option>
                 <?php foreach ($niveis_acessos as $nivel_acesso) : ?>
